@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Famous First Lines Quiz</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f9;
+      color: #333;
+      padding: 2em;
+      max-width: 800px;
+      margin: auto;
+    }
+    h1 {
+      color: #5a2a83;
+    }
+    .quote {
+      font-style: italic;
+      margin-bottom: 1em;
+    }
+    .options button {
+      display: block;
+      margin: 0.5em 0;
+      padding: 0.6em;
+      width: 100%;
+      font-size: 1em;
+      background: #fff;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .options button:hover {
+      background: #e0e0f8;
+    }
+    .feedback {
+      margin-top: 1em;
+      font-weight: bold;
+    }
+    .next-btn {
+      margin-top: 1.5em;
+      display: none;
+      background-color: #5a2a83;
+      color: white;
+      border: none;
+      padding: 0.5em 1em;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>📚 Famous First Lines Quiz</h1>
+  <div class="quote" id="quoteText"></div>
+  <div class="options" id="optionsContainer"></div>
+  <div class="feedback" id="feedback"></div>
+  <button class="next-btn" id="nextBtn" onclick="startQuiz()">Next Question</button>
+
+  <script>
+    const quotes = [
+      ["The King is dead. Long live the Queen.", "The Berlin Novels by Christopher Isherwood (1939)"],
+      ["Once there were four children whose names were Peter, Susan, Edmund, and Lucy...", "The Lion, the Witch and the Wardrobe by C.S. Lewis (1950)"],
+      ["Call me Ishmael.", "Moby-Dick by Herman Melville (1851)"],
+      ["I am an invisible man.", "Invisible Man by Ralph Ellison (1952)"],
+      ["The story so far: in the beginning, the universe was created...", "The Restaurant at the End of the Universe by Douglas Adams (1980)"],
+      ["Mother died today. Or maybe, yesterday; I can't be sure.", "The Stranger by Albert Camus (1942)"],
+      ["It was a queer, sultry summer, the summer they electrocuted the Rosenbergs...", "The Bell Jar by Sylvia Plath (1963)"],
+      ["Ships at a distance have every man’s wish on board.", "Their Eyes Were Watching God by Zora Neale Hurston (1937)"],
+      ["We were somewhere around Barstow on the edge of the desert when the drugs began to take hold.", "Fear and Loathing in Las Vegas by Hunter S. Thompson (1971)"],
+      ["You better not never tell nobody but God. It’d kill your mammy.", "The Color Purple by Alice Walker (1982)"],
+      ["It was a bright cold day in April, and the clocks were striking thirteen.", "Nineteen Eighty-Four by George Orwell (1949)"],
+      ["It is a truth universally acknowledged, that a single man in possession of a good fortune, must be in want of a wife.", "Pride and Prejudice by Jane Austen (1813)"],
+      ["The snow in the mountains was melting and Bunny had been dead for several weeks...", "The Secret History by Donna Tartt (1992)"],
+      ["The sweat wis lashing oafay Sick Boy; he wis trembling.", "Trainspotting by Irvine Welsh (1993)"],
+      ["124 was spiteful. Full of Baby's venom.", "Beloved by Toni Morrison (1987)"],
+      ["As Gregor Samsa awoke one morning from uneasy dreams he found himself transformed in his bed into a gigantic insect.", "The Metamorphosis by Franz Kafka (1915)"],
+      ["When Mary Lennox was sent to Misselthwaite Manor to live with her uncle everybody said she was the most disagreeable-looking child ever seen.", "The Secret Garden by Frances Hodgson Burnett (1911)"],
+      ["I write this sitting in the kitchen sink.", "I Capture the Castle by Dodie Smith (1948)"]
+    ];
+
+    let currentQuote = null;
+
+    function startQuiz() {
+      document.getElementById("feedback").textContent = "";
+      document.getElementById("nextBtn").style.display = "none";
+      const quoteData = quotes[Math.floor(Math.random() * quotes.length)];
+      currentQuote = quoteData;
+      const quoteText = quoteData[0];
+      const correctAnswer = quoteData[1];
+
+      document.getElementById("quoteText").textContent = `"${quoteText}"`;
+
+      const wrongAnswers = quotes
+        .filter(q => q[1] !== correctAnswer)
+        .sort(() => 0.5 - Math.random())
+        .slice(0, 2)
+        .map(q => q[1]);
+
+      const options = [correctAnswer, ...wrongAnswers].sort(() => 0.5 - Math.random());
+
+      const optionsContainer = document.getElementById("optionsContainer");
+      optionsContainer.innerHTML = "";
+      options.forEach(option => {
+        const button = document.createElement("button");
+        button.textContent = option;
+        button.onclick = () => checkAnswer(option, correctAnswer);
+        optionsContainer.appendChild(button);
+      });
+    }
+
+    function checkAnswer(selected, correct) {
+      const feedback = document.getElementById("feedback");
+      if (selected === correct) {
+        feedback.textContent = "✅ Correct!";
+        feedback.style.color = "green";
+      } else {
+        feedback.textContent = `❌ Wrong! The correct answer was: ${correct}`;
+        feedback.style.color = "red";
+      }
+      document.getElementById("nextBtn").style.display = "inline-block";
+    }
+
+    window.onload = startQuiz;
+  </script>
+</body>
+</html>
